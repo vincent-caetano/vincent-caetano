@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Vincent Caetano — Product designer &amp; builder</title>
+  <desc id="desc">A dark editorial banner with warm white typography and an abstract orange and lilac composition. From the first sketch to something people use.</desc>
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#FFFFFF" opacity="0.07"/>
+    </pattern>
+    <clipPath id="canvas"><rect width="1200" height="440" rx="24"/></clipPath>
+  </defs>
+  <g clip-path="url(#canvas)">
+    <rect width="1200" height="440" fill="#18191B"/>
+    <rect width="1200" height="440" fill="url(#dots)"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="64" y="69" fill="#B9B9B2" font-size="14" letter-spacing="3">DESIGN WITH INTENT. BUILD WITH CARE.</text>
+      <text x="60" y="162" fill="#F6F3EA" font-size="70" font-weight="700" letter-spacing="-3">Vincent Caetano<tspan fill="#FF9866">.</tspan></text>
+      <text x="64" y="215" fill="#F6F3EA" font-size="28" letter-spacing="-0.5">Product designer &amp; builder</text>
+      <text x="64" y="284" fill="#B9B9B2" font-size="20">From the first sketch</text>
+      <text x="64" y="314" fill="#B9B9B2" font-size="20">to something people use.</text>
+      <circle cx="71" cy="385" r="5" fill="#C6D7AC"/>
+      <text x="88" y="390" fill="#B9B9B2" font-size="14" letter-spacing="1.5">SÃO PAULO, BRAZIL</text>
+    </g>
+    <g transform="translate(810 73)">
+      <rect x="12" y="30" width="230" height="230" rx="70" fill="#FF9866" transform="rotate(-12 127 145)"/>
+      <rect x="110" y="123" width="205" height="155" rx="77.5" fill="#BBB3EC" transform="rotate(28 212 200)"/>
+      <circle cx="127" cy="142" r="46" fill="#18191B"/>
+      <path d="M101 142H153M127 116V168" stroke="#F6F3EA" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="239" cy="208" r="11" fill="#18191B"/>
+      <circle cx="198" cy="186" r="11" fill="#18191B"/>
+      <circle cx="296" cy="37" r="14" fill="#C6D7AC"/>
+      <path d="M26 286L35 306L57 309L40 324L43 346L24 335L4 345L8 323L-8 307L14 305Z" fill="#F6F3EA"/>
+    </g>
+  </g>
+</svg>
