@@ -20,7 +20,8 @@ ICON, GAP, GROUP_GAP, TOP = 40, 6, 28, 24
 
 
 def icon(name, n):
-    raw = urllib.request.urlopen(f"https://skillicons.dev/icons?i={name}&theme=dark").read().decode()
+    req = urllib.request.Request(f"https://skillicons.dev/icons?i={name}&theme=dark", headers={"User-Agent": "curl/8"})
+    raw = urllib.request.urlopen(req).read().decode()
     inner = raw[raw.index("<svg", 10): raw.rindex("</g>")].strip()
     # keep ids unique per icon
     ids = set(re.findall(r'id="([^"]+)"', inner))

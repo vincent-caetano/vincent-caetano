@@ -10,4 +10,4 @@
 
 ### Skills
 
-<img src="assets/skills.svg" width="100%" alt="Figma, TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Node.js, Swift, Python, Rust, Tauri, Electron, Supabase, Postgres, Docker, Vercel, Cloudflare, GitHub Actions, Astro, Bash" />
+<img src="assets/skills.svg?v=bc3eeae2" width="100%" alt="Skills by area. Design: Figma. Frontend: TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Astro. Native: Swift, Rust, Tauri, Electron. Backend: Node.js, Python, Supabase, Postgres. Infra: Docker, Vercel, Cloudflare, GitHub Actions, Bash." />
