@@ -87,6 +87,10 @@ def build():
             svg = icon(name, n)
             if "xmlns:xlink" not in svg and "xlink:" in svg:
                 svg = svg.replace("<svg ", '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ', 1)
+            # Built-in size = README size, for viewers that ignore % widths (e.g. T3's preview).
+            svg = re.sub(r'^<svg ([^>]*?)width="256" height="256"', rf'<svg \1width="{CELL_ICON}" height="{CELL_ICON}"', svg, count=1)
+            if "viewBox" not in svg.split(">", 1)[0]:
+                svg = svg.replace("<svg ", '<svg viewBox="0 0 256 256" ', 1)
             (icons / f"{name}.svg").write_text(svg + "\n")
             n += 1
     write_readme()
@@ -113,8 +117,10 @@ def write_readme():
     for old in (ROOT / "assets").glob("skills-head*.svg"):
         old.unlink()
     (ROOT / f"assets/skills-head-{v}.svg").write_text(head)
-    (ROOT / "assets/icons/_.svg").write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"/>\n')
+    # Spacers carry their real size too, so the fallback layout keeps the columns.
+    for w in {SLOT_GAP, COL_GAP, CELL_ICON}:
+        (ROOT / f"assets/icons/_{w}.svg").write_text(
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{CELL_ICON}" viewBox="0 0 {w} {CELL_ICON}"/>\n')
 
     # Widths as % of the README column so the grid fills it like the stats card.
     # Scaled to 99.4% so sub-pixel rounding never pushes the last logo to a new line.
@@ -122,7 +128,7 @@ def write_readme():
         return f"{px / total_w * 99.4:.3f}%"
 
     def gap(w):
-        return f'<img src="assets/icons/_.svg" width="{pct(w)}" alt="" />'
+        return f'<img src="assets/icons/_{w}.svg" width="{pct(w)}" alt="" />'
 
     def img(n):
         t = html.escape(NAMES[n])

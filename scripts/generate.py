@@ -83,7 +83,7 @@ def lang_icon(name, x, y, size):
     if not LANG.get(name) or not f.exists():
         return f'  <circle cx="{x + size/2}" cy="{y + size/2}" r="4" fill="#8C8C86"/>\n'
     svg = f.read_text().strip()
-    svg = re.sub(r'^<svg ([^>]*?)width="256" height="256"',
+    svg = re.sub(r'^<svg ([^>]*?)width="\d+" height="\d+"',
                  rf'<svg \1x="{x}" y="{y}" width="{size}" height="{size}"', svg, count=1)
     # keep ids unique inside this card
     for i in set(re.findall(r'id="([^"]+)"', svg)):
