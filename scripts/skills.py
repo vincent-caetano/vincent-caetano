@@ -10,18 +10,21 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
 GROUPS = [
-    ("Product", ["figma", "linear", "posthog", "googleanalytics"]),
+    ("Design", ["figma", "framer", "webflow", "miro"]),
+    ("Product", ["linear", "notion", "posthog", "googleanalytics", "hotjar", "umami", "chatwoot"]),
     ("Frontend", ["ts", "js", "react", "nextjs", "tailwind", "vite", "vitest", "astro"]),
-    ("Native", ["swift", "rust", "tauri", "electron"]),
-    ("Backend", ["nodejs", "py", "supabase", "postgres", "neon", "resend"]),
-    ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "tailscale", "sentry", "bash"]),
+    ("Native", ["swift", "expo", "rust", "tauri", "electron"]),
+    ("Backend", ["nodejs", "py", "supabase", "postgres", "neon", "stripe", "resend"]),
+    ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "tailscale", "sentry", "grafana", "bash"]),
 ]
 # Not in skillicons: drawn from Simple Icons (pinned) on a matching tile.
-# Value is the logo colour; near-black brands use warm white so they show on the tile.
+# Value is the logo colour; near-black brands use warm white (Miro: its yellow).
 SIMPLE = {"linear": "#5E6AD2", "posthog": "#F6F3EA", "googleanalytics": "#E37400",
-          "neon": "#34D59A", "resend": "#F6F3EA", "tailscale": "#F6F3EA"}
+          "neon": "#34D59A", "resend": "#F6F3EA", "tailscale": "#F6F3EA",
+          "framer": "#F6F3EA", "miro": "#FFD02F", "hotjar": "#FF3C00", "stripe": "#635BFF",
+          "expo": "#F6F3EA", "umami": "#F6F3EA", "chatwoot": "#1F93FF"}
 SIMPLE_URL = "https://cdn.jsdelivr.net/npm/simple-icons@16.38.1/icons/{}.svg"
-ICON, GAP, COL_GAP, TOP, W = 40, 8, 24, 26, 1094
+ICON, GAP, COL_GAP, TOP, W = 36, 6, 20, 26, 1094
 INSET = 8  # same safe margin as the stats card
 
 
