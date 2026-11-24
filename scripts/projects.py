@@ -12,20 +12,21 @@ FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mo
 # (file id, project name, logo source, link, hover text)
 # Logo source: "gh:<login>" = GitHub avatar (org avatars are the project brand),
 # a URL = the project's own icon, None = a neutral glyph (no logo published).
+# Ordered biggest first: public projects by GitHub stars, then private orgs.
 PROJECTS = [
-    ("futzpro", "FutzPro", "gh:futz-pro", "https://github.com/futz-pro",
-     "FutzPro: product design and engineering, web, mobile and API"),
-    ("humanmade", "HUMANMADE", "gh:HUMANMADE-DC", "https://github.com/HUMANMADE-DC",
-     "HUMANMADE: content tooling and automation"),
     ("t3code", "T3 Code", "https://t3.codes/apple-touch-icon.png", "https://github.com/pingdotgg/t3code",
      "T3 Code by Ping: contributor"),
-    ("howmuch", "How Much", "gh:HOWMUCH-Time-Cost", "https://github.com/HOWMUCH-Time-Cost/how-much",
-     "How Much: prices as work days"),
     ("vorssaint-utils", "Vorssaint Utils", "https://vorssaint.com/icon-192.png",
      "https://github.com/vorssaint/vorssaint-utils", "Vorssaint Utils: macOS menu bar toolkit"),
     ("zapfast", "ZapFast", "https://zapfast.rocks/assets/images/logo.svg", "https://github.com/crmne/zapfast",
      "ZapFast: native WhatsApp client in Rust"),
     ("search", "Search", None, "https://github.com/driceroland/Search", "Search: WebKit browser for macOS"),
+    ("futzpro", "FutzPro", "gh:futz-pro", "https://github.com/futz-pro",
+     "FutzPro: product design and engineering, web, mobile and API"),
+    ("humanmade", "HUMANMADE", "gh:HUMANMADE-DC", "https://github.com/HUMANMADE-DC",
+     "HUMANMADE: content tooling and automation"),
+    ("howmuch", "How Much", "gh:HOWMUCH-Time-Cost", "https://github.com/HOWMUCH-Time-Cost/how-much",
+     "How Much: prices as work days"),
 ]
 H, AV, CHAR, FS = 28, 16, 7.25, 12  # chip height, logo size, mono glyph width at FS px, font size
 
