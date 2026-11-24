@@ -148,13 +148,20 @@ def stats_svg(u):
 """
 
 
-if __name__ == "__main__":
-    u = fetch()
-    svg = stats_svg(u)
-    (ROOT / "assets/stats.svg").write_text(svg)
-    # Cache-bust: browsers keep raw images ~5 min, so tag the link with a content hash.
+def publish(name, svg):
+    """Write assets/<name>-<hash>.svg, drop older copies, point README at it.
+    A new file name per version is the only cache-bust that survives GitHub's
+    redirect to raw.githubusercontent.com (it drops query strings)."""
     import hashlib, re
     v = hashlib.sha1(svg.encode()).hexdigest()[:8]
+    for old in (ROOT / "assets").glob(f"{name}*.svg"):
+        old.unlink()
+    (ROOT / f"assets/{name}-{v}.svg").write_text(svg)
     readme = ROOT / "README.md"
-    readme.write_text(re.sub(r'assets/stats\.svg(\?v=\w+)?"', f'assets/stats.svg?v={v}"', readme.read_text()))
+    readme.write_text(re.sub(rf'assets/{name}[^"]*\.svg[^"]*"', f'assets/{name}-{v}.svg"', readme.read_text()))
+
+
+if __name__ == "__main__":
+    u = fetch()
+    publish("stats", stats_svg(u))
     print("ok")
