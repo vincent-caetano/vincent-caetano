@@ -115,7 +115,7 @@ def stats_svg(u):
     cell, gap = 12, 4
     hm_w = 53 * (cell + gap) - gap          # 844
     lx = hm_w + 48                          # languages column
-    W, H = lx + 200, 228
+    W, H = lx + 200, 196
 
     b = label(0, 12, "Last 12 months")
     tiles = [
@@ -124,15 +124,20 @@ def stats_svg(u):
         (f"{cur}", "day streak" if cur == best else f"streak · best {best}", "g"),
         (f'{u["repositories"]["totalCount"]}', "repositories", "k"),
     ]
-    for i, (v, k, c) in enumerate(tiles):
-        x = i * 216
-        b += f'  <text x="{x}" y="66" class="fg" font-size="42" font-weight="700" letter-spacing="-2">{esc(v)}</text>\n'
-        b += f'  <circle cx="{x+4}" cy="87" r="4" class="{c}"/>\n'
-        b += f'  <text x="{x+14}" y="92" class="mu" font-size="14">{esc(k)}</text>\n'
+    # One line per stat: dot, value, label. Spread evenly across the heatmap width.
+    VF, LF, DOT, GAP = 36, 14, 14, 8          # value px, label px, dot slot, value-label gap
+    widths = [DOT + len(v) * VF * 0.6 + GAP + len(k) * LF * 0.6 for v, k, _ in tiles]
+    space = (hm_w - sum(widths)) / (len(tiles) - 1)
+    x = 0
+    for (v, k, c), w in zip(tiles, widths):
+        b += f'  <circle cx="{x+4:.1f}" cy="57" r="4" class="{c}"/>\n'
+        b += (f'  <text x="{x+DOT:.1f}" y="62" class="fg" font-size="{VF}" font-weight="700" letter-spacing="-1">{esc(v)}'
+              f'<tspan class="mu" font-size="{LF}" font-weight="400" letter-spacing="0" dx="{GAP}">{esc(k)}</tspan></text>\n')
+        x += w + space
 
     # heatmap
     mx = max([d["contributionCount"] for d in days] + [1])
-    y0 = 120
+    y0 = 88
     for wi, w in enumerate(weeks):
         for d in w["contributionDays"]:
             n = d["contributionCount"]
@@ -147,16 +152,16 @@ def stats_svg(u):
     total = sum(n for _, n in top) or 1
     bw = W - lx
     b += label(lx, 12, "Languages")
-    b += f'  <clipPath id="bar"><rect x="{lx}" y="56" width="{bw}" height="10" rx="5"/></clipPath>\n  <g clip-path="url(#bar)">\n'
+    b += f'  <clipPath id="bar"><rect x="{lx}" y="48" width="{bw}" height="10" rx="5"/></clipPath>\n  <g clip-path="url(#bar)">\n'
     cx = lx
     for i, (name, n) in enumerate(top):
         wpx = bw * n / total
         colour = LANG.get(name, (None, "#8C8C86"))[1]
-        b += f'    <rect x="{cx:.1f}" y="56" width="{max(wpx - 2, 1):.1f}" height="10" fill="{colour}"/>\n'
+        b += f'    <rect x="{cx:.1f}" y="48" width="{max(wpx - 2, 1):.1f}" height="10" fill="{colour}"/>\n'
         cx += wpx
     b += "  </g>\n"
     for i, (name, n) in enumerate(top):
-        y = 130 + i * 19
+        y = 99 + i * 19
         b += lang_icon(name, lx, y - 12, 15)
         b += f'  <text x="{lx+22}" y="{y}" class="fg" font-size="13">{esc(name)}</text>\n'
         b += f'  <text x="{W}" y="{y}" class="mu" font-size="13" text-anchor="end">{round(100*n/total)}%</text>\n'
