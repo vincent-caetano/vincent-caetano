@@ -20,6 +20,21 @@ GROUPS = [
                "tailscale", "sentry", "grafana"]),
     ("AI & tools", ["claude", "claudecode", "codex", "raycast", "git", "npm", "bash"]),
 ]
+NAMES = {
+    "figma": "Figma", "framer": "Framer", "webflow": "Webflow", "miro": "Miro", "linear": "Linear",
+    "notion": "Notion", "posthog": "PostHog", "googleanalytics": "Google Analytics", "hotjar": "Hotjar",
+    "umami": "Umami", "chatwoot": "Chatwoot", "ts": "TypeScript", "js": "JavaScript", "react": "React",
+    "nextjs": "Next.js", "tailwind": "Tailwind CSS", "vite": "Vite", "vitest": "Vitest", "astro": "Astro",
+    "apple": "SwiftUI", "swift": "Swift", "xcode": "Xcode", "expo": "Expo / React Native", "rust": "Rust",
+    "tauri": "Tauri", "electron": "Electron", "nodejs": "Node.js", "py": "Python", "graphql": "GraphQL",
+    "supabase": "Supabase", "postgres": "PostgreSQL", "neon": "Neon", "redis": "Redis",
+    "firebase": "Firebase", "stripe": "Stripe", "resend": "Resend", "ffmpeg": "FFmpeg", "linux": "Linux",
+    "nginx": "Nginx", "docker": "Docker", "aws": "AWS", "vercel": "Vercel", "cloudflare": "Cloudflare",
+    "githubactions": "GitHub Actions", "tailscale": "Tailscale", "sentry": "Sentry", "grafana": "Grafana",
+    "claude": "Claude API", "claudecode": "Claude Code", "codex": "Codex", "raycast": "Raycast",
+    "git": "Git", "npm": "npm", "bash": "Bash",
+}
+
 # Not in skillicons: logo drawn on a matching tile. Value: (colour, source).
 # Near-black brands use warm white so they show on the dark tile (Miro: its yellow).
 W_ = "#F6F3EA"
@@ -77,7 +92,7 @@ def build():
             parts.append("  " + svg)
             H = max(H, y + ICON)
             n += 1
-    alt = html.escape("Skills. " + ". ".join(f"{l}: {', '.join(ns)}" for l, ns in GROUPS))
+    alt = html.escape("Skills. " + ". ".join(f"{l}: {', '.join(NAMES[n] for n in ns)}" for l, ns in GROUPS))
     out = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W+2*INSET}" height="{H+2*INSET}" viewBox="0 0 {W+2*INSET} {H+2*INSET}" fill="none" role="img" aria-label="{alt}">
   <title>{alt}</title>
   <style>
@@ -91,6 +106,7 @@ def build():
 </svg>
 """
     publish("skills", out)
+    footnote()
     print("ok", W, H, per_row)
 
 
@@ -105,6 +121,19 @@ def publish(name, svg):
     (ROOT / f"assets/{name}-{v}.svg").write_text(svg)
     readme = ROOT / "README.md"
     readme.write_text(re.sub(rf'assets/{name}[^"]*\.svg[^"]*"', f'assets/{name}-{v}.svg"', readme.read_text()))
+
+
+def footnote():
+    """Plain-text list under the logos, for readers, scrapers and search engines."""
+    line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
+    block = f"<!-- skills:start -->\n<p><sub>{line}</sub></p>\n<!-- skills:end -->"
+    readme = ROOT / "README.md"
+    text = readme.read_text()
+    if "<!-- skills:start -->" in text:
+        text = re.sub(r"<!-- skills:start -->.*?<!-- skills:end -->", lambda m: block, text, flags=re.S)
+    else:
+        text = re.sub(r'(<img src="assets/skills-[^>]*/>)', lambda m: m.group(1) + "\n\n" + block, text)
+    readme.write_text(text)
 
 
 if __name__ == "__main__":
