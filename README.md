@@ -18,13 +18,17 @@ I'm a **UX/UI product designer based in São Paulo, Brazil**, with 5+ years crea
 
 Here you'll find the things I build: native macOS tools, reusable design assets, and experiments that turn a small frustration into something useful.
 
-### Design mindset. Builder's curiosity.
+### By the numbers
 
-| Product & design | Hands-on building |
-| :--- | :--- |
-| Usable flows, thoughtful interactions, and clear interfaces | Native macOS apps with Swift and SwiftUI |
-| Design systems that make consistency easier | Small tools that solve everyday problems |
-| Decisions informed by how people actually use a product | Reusable assets with documentation and examples |
+<img src="assets/stats.svg" width="100%" alt="GitHub activity over the last 12 months: contributions, active days, current streak, repositories, and a contribution heatmap." />
+
+<img src="assets/languages.svg" width="100%" alt="Languages I build with, by number of repositories." />
+
+### Toolkit
+
+<img src="assets/toolkit.svg" width="100%" alt="Product design: UX/UI, design systems, usability testing, product analytics, Figma, prototyping. Build: Swift and SwiftUI, React Native and Expo, TypeScript and React, Next.js and Astro, Supabase and Postgres, Vercel. AI workflow: Claude Code and Codex, agent skills, MCP servers, context engineering, automation pipelines, prompt design." />
+
+<sub>Stats refresh daily via a GitHub Action, generated in-repo, no third-party services.</sub>
 
 ### A few things I've made
 
