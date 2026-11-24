@@ -13,16 +13,16 @@ FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mo
 LOGIN = "vincent-caetano"
 INSET = 8  # safe margin so viewers that round/border images never clip the edges
 
-# Theme-aware palette: light values first, dark overrides in the media query.
+# Accent: #D34749 (profile red). Theme-aware palette: light values first, dark overrides in the media query.
 CSS = """
   text { font-family: %s; }
   .fg { fill: #1F2023; } .mu { fill: #6B6B66; } .ln { fill: #E7E5DF; }
-  .o { fill: #F07A3E; } .l { fill: #8E83D8; } .g { fill: #8DAA62; } .k { fill: #1F2023; } .k2 { fill: #8C8C86; } .k3 { fill: #B5B5AF; }
-  .h1 { fill: #FBD9C6; } .h2 { fill: #F7B693; } .h3 { fill: #F39561; } .h4 { fill: #E8692B; }
+  .o { fill: #D34749; } .l { fill: #8E83D8; } .g { fill: #8DAA62; } .k { fill: #1F2023; } .k2 { fill: #8C8C86; } .k3 { fill: #B5B5AF; }
+  .h1 { fill: #F6D3D3; } .h2 { fill: #EBA2A3; } .h3 { fill: #DE7072; } .h4 { fill: #D34749; }
   @media (prefers-color-scheme: dark) {
     .fg { fill: #F6F3EA; } .mu { fill: #9C9C96; } .ln { fill: #2A2B2E; }
-    .o { fill: #FF9866; } .l { fill: #BBB3EC; } .g { fill: #C6D7AC; } .k { fill: #F6F3EA; } .k2 { fill: #8C8C86; } .k3 { fill: #5E5E5A; }
-    .h1 { fill: #4A3A33; } .h2 { fill: #8A5A43; } .h3 { fill: #C7764F; } .h4 { fill: #FF9866; }
+    .o { fill: #D34749; } .l { fill: #BBB3EC; } .g { fill: #C6D7AC; } .k { fill: #F6F3EA; } .k2 { fill: #8C8C86; } .k3 { fill: #5E5E5A; }
+    .h1 { fill: #3D2527; } .h2 { fill: #6E3235; } .h3 { fill: #A23D40; } .h4 { fill: #D34749; }
   }
 """ % FONT
 
