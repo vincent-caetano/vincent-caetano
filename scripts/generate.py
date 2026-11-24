@@ -146,5 +146,11 @@ def stats_svg(u):
 
 if __name__ == "__main__":
     u = fetch()
-    (ROOT / "assets/stats.svg").write_text(stats_svg(u))
+    svg = stats_svg(u)
+    (ROOT / "assets/stats.svg").write_text(svg)
+    # Cache-bust: browsers keep raw images ~5 min, so tag the link with a content hash.
+    import hashlib, re
+    v = hashlib.sha1(svg.encode()).hexdigest()[:8]
+    readme = ROOT / "README.md"
+    readme.write_text(re.sub(r'assets/stats\.svg(\?v=\w+)?"', f'assets/stats.svg?v={v}"', readme.read_text()))
     print("ok")
