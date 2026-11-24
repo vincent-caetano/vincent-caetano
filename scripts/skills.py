@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the README skills table: one column per area, one logo file each (hover shows the name).
+"""Build the README skills grid: one column per area, one logo file each (hover shows the name).
 
 Icons come from skillicons.dev once, at build time, and are embedded so the
 README never depends on that service. Run by hand when the list changes.
@@ -47,7 +47,8 @@ SIMPLE = {
     "xcode": ("#147EFB", SI), "ffmpeg": ("#2FB344", SI), "raycast": ("#FF6363", SI),
     "claude": ("#D97757", LH), "claudecode": ("#D97757", LH), "codex": (W_, LH),
 }
-CELL_ICON, PER_ROW = 32, 3  # README table: logo size, logos per line in a cell
+CELL_ICON, PER_ROW, SLOT_GAP, COL_GAP = 32, 3, 6, 24  # README grid: logo px, logos per column line, gaps
+FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
 
 def simple_tile(name):
@@ -93,18 +94,52 @@ def build():
 
 
 def write_readme():
-    """Skills table (one column per area, hover names) plus a plain-text line."""
-    head = "".join(f"<th><sub>{html.escape(l.upper())}</sub></th>" for l, _ in GROUPS)
-    # GitHub sizes tables to max-content, so break rows by hand to stay in width.
+    """Skills grid without a table (GitHub tables always get borders and a fill):
+    one header image with the area labels, then lines of logos where invisible
+    spacer images hold every column in place. Each logo keeps a hover title."""
+    import hashlib
+    cols = len(GROUPS)
+    col_w = PER_ROW * CELL_ICON + (PER_ROW - 1) * SLOT_GAP
+    total_w = cols * col_w + (cols - 1) * COL_GAP
+
+    labels = "".join(
+        f'<text x="{c * (col_w + COL_GAP)}" y="11" class="mu" font-size="10.5" letter-spacing="0.6">{html.escape(l.upper())}</text>'
+        for c, (l, _) in enumerate(GROUPS))
+    head = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{total_w}" height="16" viewBox="0 0 {total_w} 16" '
+            f'fill="none" role="img" aria-label="Skill areas"><style>text {{ font-family: {FONT}; }} '
+            '.mu { fill: #6B6B66; } @media (prefers-color-scheme: dark) { .mu { fill: #9C9C96; } }</style>'
+            f'{labels}</svg>\n')
+    v = hashlib.sha1(head.encode()).hexdigest()[:8]
+    for old in (ROOT / "assets").glob("skills-head*.svg"):
+        old.unlink()
+    (ROOT / f"assets/skills-head-{v}.svg").write_text(head)
+    (ROOT / "assets/icons/_.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"/>\n')
+
+    def gap(w):
+        return f'<img src="assets/icons/_.svg" width="{w}" height="{CELL_ICON}" alt="" />'
+
     def img(n):
         t = html.escape(NAMES[n])
         return f'<img src="assets/icons/{n}.svg" width="{CELL_ICON}" height="{CELL_ICON}" alt="{t}" title="{t}" />'
-    cells = "".join(
-        '<td valign="top">' + "<br />".join(
-            " ".join(img(n) for n in ns[i:i + PER_ROW]) for i in range(0, len(ns), PER_ROW)) + "</td>"
-        for _, ns in GROUPS)
+
+    rows = max(-(-len(ns) // PER_ROW) for _, ns in GROUPS)
+    lines = []
+    for r in range(rows):
+        parts = []
+        for c, (_, ns) in enumerate(GROUPS):
+            if c:
+                parts.append(gap(COL_GAP))
+            for k in range(PER_ROW):
+                if k:
+                    parts.append(gap(SLOT_GAP))
+                i = r * PER_ROW + k
+                parts.append(img(ns[i]) if i < len(ns) else gap(CELL_ICON))
+        lines.append("".join(parts))
+
     line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
-    block = (f"<!-- skills:start -->\n<table>\n<tr>{head}</tr>\n<tr>{cells}</tr>\n</table>\n\n"
+    block = (f'<!-- skills:start -->\n<p><img src="assets/skills-head-{v}.svg" width="{total_w}" alt="" /><br />\n'
+             + "<br />\n".join(lines) + "</p>\n\n"
              f"<p><sub>{line}</sub></p>\n<!-- skills:end -->")
     readme = ROOT / "README.md"
     text = re.sub(r"<!-- skills:start -->.*?<!-- skills:end -->", lambda m: block, readme.read_text(), flags=re.S)
