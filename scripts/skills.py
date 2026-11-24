@@ -116,12 +116,17 @@ def write_readme():
     (ROOT / "assets/icons/_.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"/>\n')
 
+    # Widths as % of the README column so the grid fills it like the stats card.
+    # Scaled to 99.4% so sub-pixel rounding never pushes the last logo to a new line.
+    def pct(px):
+        return f"{px / total_w * 99.4:.3f}%"
+
     def gap(w):
-        return f'<img src="assets/icons/_.svg" width="{w}" height="{CELL_ICON}" alt="" />'
+        return f'<img src="assets/icons/_.svg" width="{pct(w)}" alt="" />'
 
     def img(n):
         t = html.escape(NAMES[n])
-        return f'<img src="assets/icons/{n}.svg" width="{CELL_ICON}" height="{CELL_ICON}" alt="{t}" title="{t}" />'
+        return f'<img src="assets/icons/{n}.svg" width="{pct(CELL_ICON)}" alt="{t}" title="{t}" />'
 
     rows = max(-(-len(ns) // PER_ROW) for _, ns in GROUPS)
     lines = []
@@ -138,7 +143,7 @@ def write_readme():
         lines.append("".join(parts))
 
     line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
-    block = (f'<!-- skills:start -->\n<p><img src="assets/skills-head-{v}.svg" width="{total_w}" alt="" /><br />\n'
+    block = (f'<!-- skills:start -->\n<p><img src="assets/skills-head-{v}.svg" width="99.4%" alt="" /><br />\n'
              + "<br />\n".join(lines) + "</p>\n\n"
              f"<p><sub>{line}</sub></p>\n<!-- skills:end -->")
     readme = ROOT / "README.md"
