@@ -6,8 +6,8 @@
   <a href="https://peerlist.io/caetano">Peerlist</a>
 </p>
 
-<img src="assets/stats.svg?v=38419870" width="100%" alt="Last 12 months on GitHub: contributions, active days, streak, repositories, contribution heatmap and top languages." />
+<img src="assets/stats.svg?v=18160fd0" width="100%" alt="Last 12 months on GitHub: contributions, active days, streak, repositories, contribution heatmap and top languages." />
 
 ### Skills
 
-<img src="assets/skills.svg?v=bc3eeae2" width="100%" alt="Skills by area. Design: Figma. Frontend: TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Astro. Native: Swift, Rust, Tauri, Electron. Backend: Node.js, Python, Supabase, Postgres. Infra: Docker, Vercel, Cloudflare, GitHub Actions, Bash." />
+<img src="assets/skills.svg?v=83d9f40f" width="100%" alt="Skills by area. Design: Figma. Frontend: TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Astro. Native: Swift, Rust, Tauri, Electron. Backend: Node.js, Python, Supabase, Postgres. Infra: Docker, Vercel, Cloudflare, GitHub Actions, Bash." />

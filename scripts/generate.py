@@ -11,6 +11,7 @@ import json, subprocess, collections, datetime, pathlib, html
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 LOGIN = "vincent-caetano"
+INSET = 8  # safe margin so viewers that round/border images never clip the edges
 
 # Theme-aware palette: light values first, dark overrides in the media query.
 CSS = """
@@ -137,10 +138,13 @@ def stats_svg(u):
 
     title = (f"GitHub activity: {cal['totalContributions']} contributions in the last year; "
              "languages " + ", ".join(n for n, _ in top))
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="{esc(title)}">
+    P = INSET
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W+2*P}" height="{H+2*P}" viewBox="0 0 {W+2*P} {H+2*P}" fill="none" role="img" aria-label="{esc(title)}">
   <title>{esc(title)}</title>
   <style>{CSS}</style>
-{b}</svg>
+<g transform="translate({P} {P})">
+{b}</g>
+</svg>
 """
 
 

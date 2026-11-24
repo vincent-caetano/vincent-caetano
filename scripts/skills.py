@@ -17,6 +17,7 @@ GROUPS = [
     ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "bash"]),
 ]
 ICON, GAP, GROUP_GAP, TOP = 40, 6, 28, 24
+INSET = 8  # same safe margin as the stats card
 
 
 def icon(name, n):
@@ -44,14 +45,16 @@ def build():
         x += GROUP_GAP - GAP
     W, H = x - GROUP_GAP, TOP + ICON
     alt = "Skills. " + ". ".join(f"{l}: {', '.join(ns)}" for l, ns in GROUPS)
-    out = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="{alt}">
+    out = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W+2*INSET}" height="{H+2*INSET}" viewBox="0 0 {W+2*INSET} {H+2*INSET}" fill="none" role="img" aria-label="{alt}">
   <title>{alt}</title>
   <style>
     text {{ font-family: {FONT}; }}
     .mu {{ fill: #6B6B66; }}
     @media (prefers-color-scheme: dark) {{ .mu {{ fill: #9C9C96; }} }}
   </style>
+<g transform="translate({INSET} {INSET})">
 {chr(10).join(parts)}
+</g>
 </svg>
 """
     (ROOT / "assets/skills.svg").write_text(out)
