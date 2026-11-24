@@ -10,17 +10,32 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
 GROUPS = [
-    ("Design", ["figma"]),
+    ("Product", ["figma", "linear", "posthog", "googleanalytics"]),
     ("Frontend", ["ts", "js", "react", "nextjs", "tailwind", "vite", "vitest", "astro"]),
     ("Native", ["swift", "rust", "tauri", "electron"]),
-    ("Backend", ["nodejs", "py", "supabase", "postgres"]),
-    ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "bash"]),
+    ("Backend", ["nodejs", "py", "supabase", "postgres", "neon", "resend"]),
+    ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "tailscale", "sentry", "bash"]),
 ]
+# Not in skillicons: drawn from Simple Icons (pinned) on a matching tile.
+# Value is the logo colour; near-black brands use warm white so they show on the tile.
+SIMPLE = {"linear": "#5E6AD2", "posthog": "#F6F3EA", "googleanalytics": "#E37400",
+          "neon": "#34D59A", "resend": "#F6F3EA", "tailscale": "#F6F3EA"}
+SIMPLE_URL = "https://cdn.jsdelivr.net/npm/simple-icons@16.38.1/icons/{}.svg"
 ICON, GAP, COL_GAP, TOP, W = 40, 8, 24, 26, 1094
 INSET = 8  # same safe margin as the stats card
 
 
+def simple_tile(name):
+    req = urllib.request.Request(SIMPLE_URL.format(name), headers={"User-Agent": "curl/8"})
+    path = re.search(r'<path d="([^"]+)"', urllib.request.urlopen(req).read().decode()).group(1)
+    return ('<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none" viewBox="0 0 256 256">'
+            '<rect width="256" height="256" fill="#242938" rx="60"/>'
+            f'<path transform="translate(56 56) scale(6)" fill="{SIMPLE[name]}" d="{path}"/></svg>')
+
+
 def icon(name, n):
+    if name in SIMPLE:
+        return simple_tile(name)
     req = urllib.request.Request(f"https://skillicons.dev/icons?i={name}&theme=dark", headers={"User-Agent": "curl/8"})
     raw = urllib.request.urlopen(req).read().decode()
     inner = raw[raw.index("<svg", 10): raw.rindex("</g>")].strip()
