@@ -125,13 +125,13 @@ def stats_svg(u):
         (f'{u["repositories"]["totalCount"]}', "repositories", "k"),
     ]
     # One line per stat: dot, value, label. Spread evenly across the heatmap width.
-    VF, LF, DOT, GAP = 36, 14, 14, 8          # value px, label px, dot slot, value-label gap
+    VF, LF, DOT, GAP = 24, 14, 14, 8          # value px, label px, dot slot, value-label gap
     widths = [DOT + len(v) * VF * 0.6 + GAP + len(k) * LF * 0.6 for v, k, _ in tiles]
     space = (hm_w - sum(widths)) / (len(tiles) - 1)
     x = 0
     for (v, k, c), w in zip(tiles, widths):
         b += f'  <circle cx="{x+4:.1f}" cy="57" r="4" class="{c}"/>\n'
-        b += (f'  <text x="{x+DOT:.1f}" y="62" class="fg" font-size="{VF}" font-weight="700" letter-spacing="-1">{esc(v)}'
+        b += (f'  <text x="{x+DOT:.1f}" y="62" class="fg" font-size="{VF}" font-weight="700" letter-spacing="-0.5">{esc(v)}'
               f'<tspan class="mu" font-size="{LF}" font-weight="400" letter-spacing="0" dx="{GAP}">{esc(k)}</tspan></text>\n')
         x += w + space
 
