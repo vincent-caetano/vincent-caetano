@@ -3,15 +3,27 @@
 
 Uses the gh CLI (GH_TOKEN). With a token that can read private repos, private
 work is counted too; with the default Actions token only public data is.
+Transparent background; colours follow the viewer's light/dark theme.
 No third-party services, no dependencies.
 """
 import json, subprocess, collections, datetime, pathlib, html
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-BG, FG, MUTED, LINE = "#18191B", "#F6F3EA", "#B9B9B2", "#2A2B2E"
-ORANGE, LILAC, GREEN = "#FF9866", "#BBB3EC", "#C6D7AC"
-FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 LOGIN = "vincent-caetano"
+
+# Theme-aware palette: light values first, dark overrides in the media query.
+CSS = """
+  text { font-family: %s; }
+  .fg { fill: #1F2023; } .mu { fill: #6B6B66; } .ln { fill: #E7E5DF; }
+  .o { fill: #F07A3E; } .l { fill: #8E83D8; } .g { fill: #8DAA62; } .k { fill: #1F2023; } .k2 { fill: #8C8C86; } .k3 { fill: #B5B5AF; }
+  .h1 { fill: #FBD9C6; } .h2 { fill: #F7B693; } .h3 { fill: #F39561; } .h4 { fill: #E8692B; }
+  @media (prefers-color-scheme: dark) {
+    .fg { fill: #F6F3EA; } .mu { fill: #9C9C96; } .ln { fill: #2A2B2E; }
+    .o { fill: #FF9866; } .l { fill: #BBB3EC; } .g { fill: #C6D7AC; } .k { fill: #F6F3EA; } .k2 { fill: #8C8C86; } .k3 { fill: #5E5E5A; }
+    .h1 { fill: #4A3A33; } .h2 { fill: #8A5A43; } .h3 { fill: #C7764F; } .h4 { fill: #FF9866; }
+  }
+""" % FONT
 
 Q = """query($login:String!){ user(login:$login){
   repositories(ownerAffiliations:OWNER, isFork:false, first:100){ totalCount
@@ -29,24 +41,8 @@ def esc(s):
     return html.escape(str(s), quote=True)
 
 
-def frame(w, h, body, title):
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" fill="none" role="img" aria-label="{esc(title)}">
-  <title>{esc(title)}</title>
-  <defs>
-    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#FFFFFF" opacity="0.06"/></pattern>
-    <clipPath id="c"><rect width="{w}" height="{h}" rx="24"/></clipPath>
-  </defs>
-  <g clip-path="url(#c)" font-family="{FONT}">
-    <rect width="{w}" height="{h}" fill="{BG}"/>
-    <rect width="{w}" height="{h}" fill="url(#dots)"/>
-{body}
-  </g>
-</svg>
-"""
-
-
 def label(x, y, text):
-    return f'    <text x="{x}" y="{y}" fill="{MUTED}" font-size="13" letter-spacing="2.6">{esc(text.upper())}</text>\n'
+    return f'  <text x="{x}" y="{y}" class="mu" font-size="12" letter-spacing="1.5">{esc(text.upper())}</text>\n'
 
 
 def streaks(days):
@@ -89,50 +85,63 @@ def stats_svg(u):
     days = [d for w in weeks for d in w["contributionDays"]]
     cur, best = streaks(days)
     active = sum(1 for d in days if d["contributionCount"])
-    W, H = 1200, 300
-    b = label(56, 52, "Last 12 months")
+
+    cell, gap = 12, 4
+    hm_w = 53 * (cell + gap) - gap          # 844
+    lx = hm_w + 48                          # languages column
+    W, H = lx + 200, 228
+
+    b = label(0, 12, "Last 12 months")
     tiles = [
-        (fmt(cal["totalContributions"]), "contributions", ORANGE),
-        (f"{active}", "active days", LILAC),
-        (f"{cur}", "day streak" if cur == best else f"day streak · best {best}", GREEN),
-        (f'{u["repositories"]["totalCount"]}', "repositories", FG),
+        (fmt(cal["totalContributions"]), "contributions", "o"),
+        (f"{active}", "active days", "l"),
+        (f"{cur}", "day streak" if cur == best else f"streak · best {best}", "g"),
+        (f'{u["repositories"]["totalCount"]}', "repositories", "k"),
     ]
     for i, (v, k, c) in enumerate(tiles):
-        x = 56 + i * 220
-        b += f'    <text x="{x}" y="112" fill="{FG}" font-size="46" font-weight="700" letter-spacing="-1.5">{esc(v)}</text>\n'
-        b += f'    <circle cx="{x+4}" cy="133" r="4" fill="{c}"/>\n'
-        b += f'    <text x="{x+15}" y="138" fill="{MUTED}" font-size="15">{esc(k)}</text>\n'
+        x = i * 216
+        b += f'  <text x="{x}" y="66" class="fg" font-size="42" font-weight="700" letter-spacing="-2">{esc(v)}</text>\n'
+        b += f'  <circle cx="{x+4}" cy="87" r="4" class="{c}"/>\n'
+        b += f'  <text x="{x+14}" y="92" class="mu" font-size="14">{esc(k)}</text>\n'
+
     # heatmap
     mx = max([d["contributionCount"] for d in days] + [1])
-    levels = [LINE, "#4A3A33", "#8A5A43", "#C7764F", ORANGE]
-    cell, gap, x0, y0 = 12, 4, 56, 168
+    y0 = 120
     for wi, w in enumerate(weeks):
         for d in w["contributionDays"]:
             n = d["contributionCount"]
             row = (datetime.date.fromisoformat(d["date"]).weekday() + 1) % 7  # Sun first
             lvl = 0 if n == 0 else min(4, 1 + int(3 * (n / mx) ** 0.5 + 0.5))
-            b += (f'    <rect x="{x0 + wi*(cell+gap)}" y="{y0 + row*(cell+gap)}" width="{cell}" height="{cell}" '
-                  f'rx="3" fill="{levels[lvl]}"><title>{n} on {d["date"]}</title></rect>\n')
-    # languages, right column
+            cls = "ln" if lvl == 0 else f"h{lvl}"
+            b += (f'  <rect x="{wi*(cell+gap)}" y="{y0 + row*(cell+gap)}" width="{cell}" height="{cell}" '
+                  f'rx="3" class="{cls}"><title>{n} on {d["date"]}</title></rect>\n')
+
+    # languages
     top = languages(u)
     total = sum(n for _, n in top) or 1
-    palette = [ORANGE, LILAC, GREEN, FG, "#8C8C86", "#5E5E5A"]
-    lx = 56 + 53 * (cell + gap) + 44
-    b += label(lx, 52, "Languages")
-    bw = W - 56 - lx
-    b += f'    <clipPath id="bar"><rect x="{lx}" y="98" width="{bw}" height="10" rx="5"/></clipPath>\n    <g clip-path="url(#bar)">\n'
+    classes = ["o", "l", "g", "k", "k2", "k3"]
+    bw = W - lx
+    b += label(lx, 12, "Languages")
+    b += f'  <clipPath id="bar"><rect x="{lx}" y="56" width="{bw}" height="10" rx="5"/></clipPath>\n  <g clip-path="url(#bar)">\n'
     cx = lx
     for i, (name, n) in enumerate(top):
         wpx = bw * n / total
-        b += f'      <rect x="{cx:.1f}" y="98" width="{wpx:.1f}" height="10" fill="{palette[i]}"/>\n'
+        b += f'    <rect x="{cx:.1f}" y="56" width="{wpx + 0.5:.1f}" height="10" class="{classes[i]}"/>\n'
         cx += wpx
-    b += "    </g>\n"
+    b += "  </g>\n"
     for i, (name, n) in enumerate(top):
-        y = 172 + i * 19
-        b += f'    <circle cx="{lx+4}" cy="{y-5}" r="4" fill="{palette[i]}"/>\n'
-        b += f'    <text x="{lx+15}" y="{y}" fill="{FG}" font-size="14">{esc(name)}</text>\n'
-        b += f'    <text x="{W-56}" y="{y}" fill="{MUTED}" font-size="14" text-anchor="end">{round(100*n/total)}%</text>\n'
-    return frame(W, H, b, f"GitHub activity: {cal['totalContributions']} contributions in the last year; languages " + ", ".join(n for n, _ in top))
+        y = 130 + i * 19
+        b += f'  <circle cx="{lx+4}" cy="{y-4}" r="4" class="{classes[i]}"/>\n'
+        b += f'  <text x="{lx+14}" y="{y}" class="fg" font-size="13">{esc(name)}</text>\n'
+        b += f'  <text x="{W}" y="{y}" class="mu" font-size="13" text-anchor="end">{round(100*n/total)}%</text>\n'
+
+    title = (f"GitHub activity: {cal['totalContributions']} contributions in the last year; "
+             "languages " + ", ".join(n for n, _ in top))
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="{esc(title)}">
+  <title>{esc(title)}</title>
+  <style>{CSS}</style>
+{b}</svg>
+"""
 
 
 if __name__ == "__main__":
