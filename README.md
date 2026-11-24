@@ -6,7 +6,7 @@
   <a href="https://peerlist.io/caetano">Peerlist</a>
 </p>
 
-<img src="assets/stats-784ef770.svg" width="100%" alt="Last 12 months on GitHub: contributions, active days, streak, repositories, contribution heatmap and top languages." />
+<img src="assets/stats-8d1dff05.svg" width="100%" alt="Last 12 months on GitHub: contributions, active days, streak, repositories, contribution heatmap and top languages." />
 
 ### Skills
 

@@ -6,7 +6,7 @@ work is counted too; with the default Actions token only public data is.
 Transparent background; colours follow the viewer's light/dark theme.
 No third-party services, no dependencies.
 """
-import json, subprocess, collections, datetime, pathlib, html
+import json, subprocess, collections, datetime, pathlib, html, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
@@ -66,6 +66,31 @@ def fmt(n):
     return f"{n/1000:.1f}k".replace(".0k", "k") if n >= 10000 else f"{n:,}"
 
 
+# Language -> (logo file in assets/icons, brand colour for the bar).
+LANG = {
+    "TypeScript": ("ts", "#3178C6"), "JavaScript": ("js", "#F7DF1E"), "Python": ("py", "#3776AB"),
+    "Swift": ("swift", "#F05138"), "Rust": ("rust", "#CE422B"), "Astro": ("astro", "#BC52EE"),
+    "Go": ("go", "#00ADD8"), "Kotlin": ("kotlin", "#7F52FF"), "Java": ("java", "#E76F00"),
+    "Ruby": ("ruby", "#CC342D"), "PHP": ("php", "#777BB4"), "Dart": ("dart", "#0175C2"),
+    "Vue": ("vue", "#41B883"), "Svelte": ("svelte", "#FF3E00"), "C++": ("cpp", "#00599C"),
+    "C#": ("cs", "#9B4F96"), "PLpgSQL": ("postgres", "#336791"),
+}
+
+
+def lang_icon(name, x, y, size):
+    """Inline the language's logo (from assets/icons); a grey dot if there is none."""
+    f = ROOT / "assets/icons" / f"{LANG.get(name, ('', ''))[0]}.svg"
+    if not LANG.get(name) or not f.exists():
+        return f'  <circle cx="{x + size/2}" cy="{y + size/2}" r="4" fill="#8C8C86"/>\n'
+    svg = f.read_text().strip()
+    svg = re.sub(r'^<svg ([^>]*?)width="256" height="256"',
+                 rf'<svg \1x="{x}" y="{y}" width="{size}" height="{size}"', svg, count=1)
+    # keep ids unique inside this card
+    for i in set(re.findall(r'id="([^"]+)"', svg)):
+        svg = svg.replace(f'id="{i}"', f'id="L{i}"').replace(f"#{i})", f"#L{i})").replace(f'"#{i}"', f'"#L{i}"')
+    return "  " + svg + "\n"
+
+
 def languages(u):
     # Repos by language (a language counts if it is >=15% of a repo's code),
     # so generated landing-page HTML does not drown out real work.
@@ -117,23 +142,23 @@ def stats_svg(u):
             b += (f'  <rect x="{wi*(cell+gap)}" y="{y0 + row*(cell+gap)}" width="{cell}" height="{cell}" '
                   f'rx="3" class="{cls}"><title>{n} on {d["date"]}</title></rect>\n')
 
-    # languages
+    # languages: brand colour on the bar, logo in the legend
     top = languages(u)
     total = sum(n for _, n in top) or 1
-    classes = ["o", "l", "g", "k", "k2", "k3"]
     bw = W - lx
     b += label(lx, 12, "Languages")
     b += f'  <clipPath id="bar"><rect x="{lx}" y="56" width="{bw}" height="10" rx="5"/></clipPath>\n  <g clip-path="url(#bar)">\n'
     cx = lx
     for i, (name, n) in enumerate(top):
         wpx = bw * n / total
-        b += f'    <rect x="{cx:.1f}" y="56" width="{wpx + 0.5:.1f}" height="10" class="{classes[i]}"/>\n'
+        colour = LANG.get(name, (None, "#8C8C86"))[1]
+        b += f'    <rect x="{cx:.1f}" y="56" width="{max(wpx - 2, 1):.1f}" height="10" fill="{colour}"/>\n'
         cx += wpx
     b += "  </g>\n"
     for i, (name, n) in enumerate(top):
         y = 130 + i * 19
-        b += f'  <circle cx="{lx+4}" cy="{y-4}" r="4" class="{classes[i]}"/>\n'
-        b += f'  <text x="{lx+14}" y="{y}" class="fg" font-size="13">{esc(name)}</text>\n'
+        b += lang_icon(name, lx, y - 12, 15)
+        b += f'  <text x="{lx+22}" y="{y}" class="fg" font-size="13">{esc(name)}</text>\n'
         b += f'  <text x="{W}" y="{y}" class="mu" font-size="13" text-anchor="end">{round(100*n/total)}%</text>\n'
 
     title = (f"GitHub activity: {cal['totalContributions']} contributions in the last year; "
