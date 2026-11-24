@@ -19,3 +19,17 @@
 
 <p><sub><b>Product &amp; design</b> Figma, Framer, Webflow, Miro, Linear, Notion, PostHog, Google Analytics, Hotjar, Umami, Chatwoot · <b>Frontend</b> TypeScript, JavaScript, React, Next.js, Tailwind CSS, Vite, Vitest, Astro · <b>Native</b> SwiftUI, Swift, Xcode, Expo / React Native, Rust, Tauri, Electron · <b>Backend</b> Node.js, Python, GraphQL, Supabase, PostgreSQL, Neon, Redis, Firebase, Stripe, Resend, FFmpeg · <b>Infra</b> Linux, Nginx, Docker, AWS, Vercel, Cloudflare, GitHub Actions, Tailscale, Sentry, Grafana · <b>AI &amp; tools</b> Claude API, Claude Code, Codex, Raycast, Git, npm, Bash</sub></p>
 <!-- skills:end -->
+
+### Contributed to
+
+<!-- projects:start -->
+<p>
+<a href="https://github.com/futz-pro" title="FutzPro: product design and engineering, web, mobile and API"><img src="assets/projects/futz-pro.svg" height="40" alt="@futz-pro" title="FutzPro: product design and engineering, web, mobile and API" /></a>
+<a href="https://github.com/HUMANMADE-DC" title="HUMANMADE: content tooling and automation"><img src="assets/projects/HUMANMADE-DC.svg" height="40" alt="@HUMANMADE-DC" title="HUMANMADE: content tooling and automation" /></a>
+<a href="https://github.com/pingdotgg/t3code" title="T3 Code: contributor"><img src="assets/projects/pingdotgg.svg" height="40" alt="@pingdotgg" title="T3 Code: contributor" /></a>
+<a href="https://github.com/HOWMUCH-Time-Cost/how-much" title="How Much: prices as work days"><img src="assets/projects/HOWMUCH-Time-Cost.svg" height="40" alt="@HOWMUCH-Time-Cost" title="How Much: prices as work days" /></a>
+<a href="https://github.com/vorssaint/vorssaint-utils" title="vorssaint-utils: macOS menu bar toolkit"><img src="assets/projects/vorssaint.svg" height="40" alt="@vorssaint" title="vorssaint-utils: macOS menu bar toolkit" /></a>
+<a href="https://github.com/crmne/zapfast" title="ZapFast: native WhatsApp client in Rust"><img src="assets/projects/crmne.svg" height="40" alt="@crmne" title="ZapFast: native WhatsApp client in Rust" /></a>
+<a href="https://github.com/driceroland/Search" title="Search: WebKit browser for macOS"><img src="assets/projects/driceroland.svg" height="40" alt="@driceroland" title="Search: WebKit browser for macOS" /></a>
+</p>
+<!-- projects:end -->
