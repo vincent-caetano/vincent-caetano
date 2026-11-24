@@ -10,4 +10,4 @@
 
 ### Skills
 
-<img src="assets/skills-75ac3381.svg" width="100%" alt="Skills by area. Design: Figma, Framer, Webflow, Miro. Product: Linear, Notion, PostHog, Google Analytics, Hotjar, Umami, Chatwoot. Frontend: TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Astro. Native: Swift, Expo, Rust, Tauri, Electron. Backend: Node.js, Python, Supabase, Postgres, Neon, Stripe, Resend. Infra: Docker, Vercel, Cloudflare, GitHub Actions, Tailscale, Sentry, Grafana, Bash." />
+<img src="assets/skills-afaee965.svg" width="100%" alt="Skills by area. Product and design: Figma, Framer, Webflow, Miro, Linear, Notion, PostHog, Google Analytics, Hotjar, Umami, Chatwoot. Frontend: TypeScript, JavaScript, React, Next.js, Tailwind, Vite, Vitest, Astro. Native: Apple, Swift and SwiftUI, Xcode, Expo, Rust, Tauri, Electron. Backend: Node.js, Python, GraphQL, Supabase, Postgres, Neon, Redis, Firebase, Stripe, Resend, FFmpeg. Infra: Linux, Nginx, Docker, AWS, Vercel, Cloudflare, GitHub Actions, Tailscale, Sentry, Grafana. AI and tools: Claude API, Claude Code, Codex, Raycast, Git, npm, Bash." />

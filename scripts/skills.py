@@ -4,36 +4,47 @@
 Icons come from skillicons.dev once, at build time, and are embedded so the
 README never depends on that service. Run by hand when the list changes.
 """
-import pathlib, re, urllib.request
+import html, pathlib, re, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
 GROUPS = [
-    ("Design", ["figma", "framer", "webflow", "miro"]),
-    ("Product", ["linear", "notion", "posthog", "googleanalytics", "hotjar", "umami", "chatwoot"]),
+    ("Product & design", ["figma", "framer", "webflow", "miro", "linear", "notion",
+                          "posthog", "googleanalytics", "hotjar", "umami", "chatwoot"]),
     ("Frontend", ["ts", "js", "react", "nextjs", "tailwind", "vite", "vitest", "astro"]),
-    ("Native", ["swift", "expo", "rust", "tauri", "electron"]),
-    ("Backend", ["nodejs", "py", "supabase", "postgres", "neon", "stripe", "resend"]),
-    ("Infra", ["docker", "vercel", "cloudflare", "githubactions", "tailscale", "sentry", "grafana", "bash"]),
+    ("Native", ["apple", "swift", "xcode", "expo", "rust", "tauri", "electron"]),
+    ("Backend", ["nodejs", "py", "graphql", "supabase", "postgres", "neon", "redis",
+                 "firebase", "stripe", "resend", "ffmpeg"]),
+    ("Infra", ["linux", "nginx", "docker", "aws", "vercel", "cloudflare", "githubactions",
+               "tailscale", "sentry", "grafana"]),
+    ("AI & tools", ["claude", "claudecode", "codex", "raycast", "git", "npm", "bash"]),
 ]
-# Not in skillicons: drawn from Simple Icons (pinned) on a matching tile.
-# Value is the logo colour; near-black brands use warm white (Miro: its yellow).
-SIMPLE = {"linear": "#5E6AD2", "posthog": "#F6F3EA", "googleanalytics": "#E37400",
-          "neon": "#34D59A", "resend": "#F6F3EA", "tailscale": "#F6F3EA",
-          "framer": "#F6F3EA", "miro": "#FFD02F", "hotjar": "#FF3C00", "stripe": "#635BFF",
-          "expo": "#F6F3EA", "umami": "#F6F3EA", "chatwoot": "#1F93FF"}
-SIMPLE_URL = "https://cdn.jsdelivr.net/npm/simple-icons@16.38.1/icons/{}.svg"
+# Not in skillicons: logo drawn on a matching tile. Value: (colour, source).
+# Near-black brands use warm white so they show on the dark tile (Miro: its yellow).
+W_ = "#F6F3EA"
+SI = "https://cdn.jsdelivr.net/npm/simple-icons@16.38.1/icons/{}.svg"
+LH = "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@1.106.0/icons/{}.svg"
+SIMPLE = {
+    "linear": ("#5E6AD2", SI), "posthog": (W_, SI), "googleanalytics": ("#E37400", SI),
+    "neon": ("#34D59A", SI), "resend": (W_, SI), "tailscale": (W_, SI), "framer": (W_, SI),
+    "miro": ("#FFD02F", SI), "hotjar": ("#FF3C00", SI), "stripe": ("#635BFF", SI),
+    "expo": (W_, SI), "umami": (W_, SI), "chatwoot": ("#1F93FF", SI),
+    "xcode": ("#147EFB", SI), "ffmpeg": ("#2FB344", SI), "raycast": ("#FF6363", SI),
+    "claude": ("#D97757", LH), "claudecode": ("#D97757", LH), "codex": (W_, LH),
+}
 ICON, GAP, COL_GAP, TOP, W = 36, 6, 20, 26, 1094
 INSET = 8  # same safe margin as the stats card
 
 
 def simple_tile(name):
-    req = urllib.request.Request(SIMPLE_URL.format(name), headers={"User-Agent": "curl/8"})
-    path = re.search(r'<path d="([^"]+)"', urllib.request.urlopen(req).read().decode()).group(1)
+    colour, src = SIMPLE[name]
+    req = urllib.request.Request(src.format(name), headers={"User-Agent": "curl/8"})
+    raw = urllib.request.urlopen(req).read().decode()
+    inner = re.sub(r"<title>.*?</title>", "", raw[raw.index(">") + 1: raw.rindex("</svg>")])
     return ('<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none" viewBox="0 0 256 256">'
             '<rect width="256" height="256" fill="#242938" rx="60"/>'
-            f'<path transform="translate(56 56) scale(6)" fill="{SIMPLE[name]}" d="{path}"/></svg>')
+            f'<g transform="translate(56 56) scale(6)" fill="{colour}" fill-rule="evenodd">{inner}</g></svg>')
 
 
 def icon(name, n):
@@ -57,7 +68,7 @@ def build():
     parts, n, H = [], 0, 0
     for c, (label, names) in enumerate(GROUPS):
         x0 = c * (col_w + COL_GAP)
-        parts.append(f'  <text x="{x0:.0f}" y="12" class="mu" font-size="12" letter-spacing="1.5">{label.upper()}</text>')
+        parts.append(f'  <text x="{x0:.0f}" y="12" class="mu" font-size="12" letter-spacing="1.5">{html.escape(label.upper())}</text>')
         for i, name in enumerate(names):
             x = x0 + (i % per_row) * (ICON + GAP)
             y = TOP + (i // per_row) * (ICON + GAP)
@@ -66,7 +77,7 @@ def build():
             parts.append("  " + svg)
             H = max(H, y + ICON)
             n += 1
-    alt = "Skills. " + ". ".join(f"{l}: {', '.join(ns)}" for l, ns in GROUPS)
+    alt = html.escape("Skills. " + ". ".join(f"{l}: {', '.join(ns)}" for l, ns in GROUPS))
     out = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W+2*INSET}" height="{H+2*INSET}" viewBox="0 0 {W+2*INSET} {H+2*INSET}" fill="none" role="img" aria-label="{alt}">
   <title>{alt}</title>
   <style>
