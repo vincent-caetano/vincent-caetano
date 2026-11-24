@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build assets/skills.svg: tech logos grouped by area, one row, labels above.
+"""Build the README skills table: one column per area, one logo file each (hover shows the name).
 
 Icons come from skillicons.dev once, at build time, and are embedded so the
 README never depends on that service. Run by hand when the list changes.
@@ -7,7 +7,6 @@ README never depends on that service. Run by hand when the list changes.
 import html, pathlib, re, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
 GROUPS = [
     ("Product & design", ["figma", "framer", "webflow", "miro", "linear", "notion",
@@ -48,8 +47,7 @@ SIMPLE = {
     "xcode": ("#147EFB", SI), "ffmpeg": ("#2FB344", SI), "raycast": ("#FF6363", SI),
     "claude": ("#D97757", LH), "claudecode": ("#D97757", LH), "codex": (W_, LH),
 }
-ICON, GAP, COL_GAP, TOP, W = 36, 6, 20, 26, 1094
-INSET = 8  # same safe margin as the stats card
+CELL_ICON, PER_ROW = 32, 3  # README table: logo size, logos per line in a cell
 
 
 def simple_tile(name):
@@ -76,38 +74,41 @@ def icon(name, n):
 
 
 def build():
-    # One column per area, equal widths; icons wrap inside their column.
-    cols = len(GROUPS)
-    col_w = (W - COL_GAP * (cols - 1)) / cols
-    per_row = max(1, int((col_w + GAP) // (ICON + GAP)))
-    parts, n, H = [], 0, 0
-    for c, (label, names) in enumerate(GROUPS):
-        x0 = c * (col_w + COL_GAP)
-        parts.append(f'  <text x="{x0:.0f}" y="12" class="mu" font-size="12" letter-spacing="1.5">{html.escape(label.upper())}</text>')
-        for i, name in enumerate(names):
-            x = x0 + (i % per_row) * (ICON + GAP)
-            y = TOP + (i // per_row) * (ICON + GAP)
-            svg = re.sub(r'^<svg ([^>]*?)width="256" height="256"',
-                         rf'<svg \1x="{x:.0f}" y="{y}" width="{ICON}" height="{ICON}"', icon(name, n), count=1)
-            parts.append("  " + svg)
-            H = max(H, y + ICON)
+    # Each logo is its own file so it can carry a hover title on GitHub
+    # (an SVG shown through <img> ignores titles inside it).
+    icons = ROOT / "assets/icons"
+    icons.mkdir(parents=True, exist_ok=True)
+    for old in icons.glob("*.svg"):
+        old.unlink()
+    n = 0
+    for _, names in GROUPS:
+        for name in names:
+            svg = icon(name, n)
+            if "xmlns:xlink" not in svg and "xlink:" in svg:
+                svg = svg.replace("<svg ", '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ', 1)
+            (icons / f"{name}.svg").write_text(svg + "\n")
             n += 1
-    alt = html.escape("Skills. " + ". ".join(f"{l}: {', '.join(NAMES[n] for n in ns)}" for l, ns in GROUPS))
-    out = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W+2*INSET}" height="{H+2*INSET}" viewBox="0 0 {W+2*INSET} {H+2*INSET}" fill="none" role="img" aria-label="{alt}">
-  <title>{alt}</title>
-  <style>
-    text {{ font-family: {FONT}; }}
-    .mu {{ fill: #6B6B66; }}
-    @media (prefers-color-scheme: dark) {{ .mu {{ fill: #9C9C96; }} }}
-  </style>
-<g transform="translate({INSET} {INSET})">
-{chr(10).join(parts)}
-</g>
-</svg>
-"""
-    publish("skills", out)
-    footnote()
-    print("ok", W, H, per_row)
+    write_readme()
+    print("ok", n)
+
+
+def write_readme():
+    """Skills table (one column per area, hover names) plus a plain-text line."""
+    head = "".join(f"<th><sub>{html.escape(l.upper())}</sub></th>" for l, _ in GROUPS)
+    # GitHub sizes tables to max-content, so break rows by hand to stay in width.
+    def img(n):
+        t = html.escape(NAMES[n])
+        return f'<img src="assets/icons/{n}.svg" width="{CELL_ICON}" height="{CELL_ICON}" alt="{t}" title="{t}" />'
+    cells = "".join(
+        '<td valign="top">' + "<br />".join(
+            " ".join(img(n) for n in ns[i:i + PER_ROW]) for i in range(0, len(ns), PER_ROW)) + "</td>"
+        for _, ns in GROUPS)
+    line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
+    block = (f"<!-- skills:start -->\n<table>\n<tr>{head}</tr>\n<tr>{cells}</tr>\n</table>\n\n"
+             f"<p><sub>{line}</sub></p>\n<!-- skills:end -->")
+    readme = ROOT / "README.md"
+    text = re.sub(r"<!-- skills:start -->.*?<!-- skills:end -->", lambda m: block, readme.read_text(), flags=re.S)
+    readme.write_text(text)
 
 
 def publish(name, svg):
@@ -121,19 +122,6 @@ def publish(name, svg):
     (ROOT / f"assets/{name}-{v}.svg").write_text(svg)
     readme = ROOT / "README.md"
     readme.write_text(re.sub(rf'assets/{name}[^"]*\.svg[^"]*"', f'assets/{name}-{v}.svg"', readme.read_text()))
-
-
-def footnote():
-    """Plain-text list under the logos, for readers, scrapers and search engines."""
-    line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
-    block = f"<!-- skills:start -->\n<p><sub>{line}</sub></p>\n<!-- skills:end -->"
-    readme = ROOT / "README.md"
-    text = readme.read_text()
-    if "<!-- skills:start -->" in text:
-        text = re.sub(r"<!-- skills:start -->.*?<!-- skills:end -->", lambda m: block, text, flags=re.S)
-    else:
-        text = re.sub(r'(<img src="assets/skills-[^>]*/>)', lambda m: m.group(1) + "\n\n" + block, text)
-    readme.write_text(text)
 
 
 if __name__ == "__main__":
