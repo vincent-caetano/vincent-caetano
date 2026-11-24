@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="84" height="28" viewBox="0 0 84 28" fill="none" role="img" aria-label="Search">
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
+    .fg { fill: #1F2023; } .bd { stroke: #D0D7DE; } .gl { fill: #EAEEF2; } .gs { stroke: #57606A; }
+    @media (prefers-color-scheme: dark) { .fg { fill: #F6F3EA; } .bd { stroke: #3D444D; } .gl { fill: #262C36; } .gs { stroke: #C9D1D9; } }
+  </style>
+  <rect x="0.5" y="0.5" width="83" height="27" rx="6" class="bd"/>
+  <rect x="8" y="6.0" width="16" height="16" rx="4" class="gl"/><circle cx="15" cy="13.0" r="3.6" stroke-width="1.6" class="gs"/><path d="M17.6 15.6L20 18.0" stroke-width="1.6" stroke-linecap="round" class="gs"/>
+  <text x="31" y="18.0" class="fg" font-size="12" font-weight="500">Search</text>
+</svg>
