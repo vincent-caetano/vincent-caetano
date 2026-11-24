@@ -20,7 +20,7 @@ PROJECTS = [
      "https://github.com/vorssaint/vorssaint-utils", "Vorssaint Utils: macOS menu bar toolkit"),
     ("zapfast", "ZapFast", "https://zapfast.rocks/assets/images/logo.svg", "https://github.com/crmne/zapfast",
      "ZapFast: native WhatsApp client in Rust"),
-    ("search", "Search Browser", None, "https://github.com/driceroland/Search", "Search Browser: WebKit browser for macOS"),
+    ("search-browser", "Search Browser", None, "https://github.com/driceroland/Search", "Search Browser: WebKit browser for macOS"),
 ]
 H, AV, CHAR, FS = 28, 16, 7.25, 12  # chip height, logo size, mono glyph width at FS px, font size
 

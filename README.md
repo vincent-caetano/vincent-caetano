@@ -27,6 +27,6 @@
 <a href="https://github.com/pingdotgg/t3code" title="T3 Code by Ping: contributor"><img src="assets/projects/t3code.svg" height="28" alt="T3 Code" title="T3 Code by Ping: contributor" /></a>
 <a href="https://github.com/vorssaint/vorssaint-utils" title="Vorssaint Utils: macOS menu bar toolkit"><img src="assets/projects/vorssaint-utils.svg" height="28" alt="Vorssaint Utils" title="Vorssaint Utils: macOS menu bar toolkit" /></a>
 <a href="https://github.com/crmne/zapfast" title="ZapFast: native WhatsApp client in Rust"><img src="assets/projects/zapfast.svg" height="28" alt="ZapFast" title="ZapFast: native WhatsApp client in Rust" /></a>
-<a href="https://github.com/driceroland/Search" title="Search Browser: WebKit browser for macOS"><img src="assets/projects/search.svg" height="28" alt="Search Browser" title="Search Browser: WebKit browser for macOS" /></a>
+<a href="https://github.com/driceroland/Search" title="Search Browser: WebKit browser for macOS"><img src="assets/projects/search-browser.svg" height="28" alt="Search Browser" title="Search Browser: WebKit browser for macOS" /></a>
 </p>
 <!-- projects:end -->
