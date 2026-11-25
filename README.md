@@ -24,16 +24,16 @@
 
 <!-- built:start -->
 <p>
-<a href="https://futz.pro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)"><img src="assets/built/futzpro.svg" width="92" height="28" alt="FutzPro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)" /></a>
-<img src="assets/built/hostbar.svg" width="92" height="28" alt="Hostbar" title="Hostbar: your Linux server live in the macOS menu bar, over SSH" />
-<a href="https://github.com/vincent-caetano/Github-Greenlight-by-Vincent" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar"><img src="assets/built/greenlight.svg" width="164" height="28" alt="GitHub Greenlight" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar" /></a>
-<a href="https://github.com/vincent-caetano/memento-vincents-compact-killer" title="Memento: Claude Code context memory that beats /compact"><img src="assets/built/memento.svg" width="92" height="28" alt="Memento" title="Memento: Claude Code context memory that beats /compact" /></a>
-<img src="assets/built/postpilot.svg" width="106" height="28" alt="PostPilot" title="PostPilot: one video into ready YouTube, TikTok and Instagram uploads" />
-<img src="assets/built/openmeta.svg" width="99" height="28" alt="OpenMeta" title="OpenMeta: EXIF metadata editor for macOS" />
-<img src="assets/built/airdrop-dock.svg" width="128" height="28" alt="AirDrop Dock" title="AirDrop Dock: drop files on the Dock, pick a device, done" />
-<a href="https://github.com/vincent-caetano/Squishy-Media-Manager" title="Squishy: native macOS media converter on top of ffmpeg"><img src="assets/built/squishy.svg" width="92" height="28" alt="Squishy" title="Squishy: native macOS media converter on top of ffmpeg" /></a>
-<a href="https://github.com/vincent-caetano/soundboard-for-macos" title="Soundboard: macOS menu bar soundboard with global hotkeys"><img src="assets/built/soundboard.svg" width="114" height="28" alt="Soundboard" title="Soundboard: macOS menu bar soundboard with global hotkeys" /></a>
-<a href="https://github.com/vincent-caetano/tweemoji-brazil-state-flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags"><img src="assets/built/br-flags.svg" width="128" height="28" alt="Brazil Flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags" /></a>
+<a href="https://futz.pro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)"><img src="assets/built/futzpro-e737de1c.svg" width="92" height="28" alt="FutzPro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)" /></a>
+<img src="assets/built/hostbar-2433bd97.svg" width="110" height="28" alt="Hostbar" title="Hostbar: your Linux server live in the macOS menu bar, over SSH (private)" />
+<a href="https://github.com/vincent-caetano/Github-Greenlight-by-Vincent" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar"><img src="assets/built/greenlight-9e0e965d.svg" width="164" height="28" alt="GitHub Greenlight" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar" /></a>
+<a href="https://github.com/vincent-caetano/memento-vincents-compact-killer" title="Memento: Claude Code context memory that beats /compact"><img src="assets/built/memento-2479bd99.svg" width="92" height="28" alt="Memento" title="Memento: Claude Code context memory that beats /compact" /></a>
+<img src="assets/built/postpilot-68877e8f.svg" width="124" height="28" alt="PostPilot" title="PostPilot: one video into ready YouTube, TikTok and Instagram uploads (private)" />
+<img src="assets/built/openmeta-d9566d0b.svg" width="117" height="28" alt="OpenMeta" title="OpenMeta: EXIF metadata editor for macOS (private)" />
+<img src="assets/built/airdrop-dock-6909c68a.svg" width="146" height="28" alt="AirDrop Dock" title="AirDrop Dock: drop files on the Dock, pick a device, done (private)" />
+<a href="https://github.com/vincent-caetano/Squishy-Media-Manager" title="Squishy: native macOS media converter on top of ffmpeg"><img src="assets/built/squishy-d788074e.svg" width="92" height="28" alt="Squishy" title="Squishy: native macOS media converter on top of ffmpeg" /></a>
+<a href="https://github.com/vincent-caetano/soundboard-for-macos" title="Soundboard: macOS menu bar soundboard with global hotkeys"><img src="assets/built/soundboard-70530483.svg" width="114" height="28" alt="Soundboard" title="Soundboard: macOS menu bar soundboard with global hotkeys" /></a>
+<a href="https://github.com/vincent-caetano/tweemoji-brazil-state-flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags"><img src="assets/built/br-flags-7bdae482.svg" width="128" height="28" alt="Brazil Flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags" /></a>
 </p>
 <!-- built:end -->
 
@@ -41,9 +41,9 @@
 
 <!-- projects:start -->
 <p>
-<a href="https://github.com/pingdotgg/t3code" title="T3 Code by Ping: contributor"><img src="assets/projects/t3code.svg" width="92" height="28" alt="T3 Code" title="T3 Code by Ping: contributor" /></a>
-<a href="https://github.com/vorssaint/vorssaint-utils" title="Vorssaint Utils: macOS menu bar toolkit"><img src="assets/projects/vorssaint-utils.svg" width="150" height="28" alt="Vorssaint Utils" title="Vorssaint Utils: macOS menu bar toolkit" /></a>
-<a href="https://github.com/crmne/zapfast" title="ZapFast: native WhatsApp client in Rust"><img src="assets/projects/zapfast.svg" width="92" height="28" alt="ZapFast" title="ZapFast: native WhatsApp client in Rust" /></a>
-<a href="https://github.com/driceroland/Search" title="Search Browser: WebKit browser for macOS"><img src="assets/projects/search-browser.svg" width="142" height="28" alt="Search Browser" title="Search Browser: WebKit browser for macOS" /></a>
+<a href="https://github.com/pingdotgg/t3code" title="T3 Code by Ping: contributor"><img src="assets/projects/t3code-3c1e6ecc.svg" width="92" height="28" alt="T3 Code" title="T3 Code by Ping: contributor" /></a>
+<a href="https://github.com/vorssaint/vorssaint-utils" title="Vorssaint Utils: macOS menu bar toolkit"><img src="assets/projects/vorssaint-utils-bbec2c19.svg" width="150" height="28" alt="Vorssaint Utils" title="Vorssaint Utils: macOS menu bar toolkit" /></a>
+<a href="https://github.com/crmne/zapfast" title="ZapFast: native WhatsApp client in Rust"><img src="assets/projects/zapfast-9a26d1aa.svg" width="92" height="28" alt="ZapFast" title="ZapFast: native WhatsApp client in Rust" /></a>
+<a href="https://github.com/driceroland/Search" title="Search Browser: WebKit browser for macOS"><img src="assets/projects/search-browser-a8933404.svg" width="142" height="28" alt="Search Browser" title="Search Browser: WebKit browser for macOS" /></a>
 </p>
 <!-- projects:end -->

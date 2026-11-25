@@ -4,7 +4,7 @@ like GitHub's organization chips, linked and with a hover title in the README.
 Avatars are embedded as data URIs (an SVG shown via <img> cannot load external images).
 Run by hand when the list changes.
 """
-import base64, html, pathlib, re, urllib.request
+import base64, hashlib, html, pathlib, re, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
@@ -72,8 +72,9 @@ GLYPH = ('<rect x="{x}" y="{y}" width="{s}" height="{s}" rx="4" class="gl"/>'
          '<path d="M{lx1} {ly1}L{lx2} {ly2}" stroke-width="1.6" stroke-linecap="round" class="gs"/>')
 
 
-def chip(name, src):
-    w = round(8 + AV + 7 + len(name) * CHAR + 10)
+def chip(name, src, locked=False):
+    LOCK = 18 if locked else 0  # room for the lock emoji after the name
+    w = round(8 + AV + 7 + len(name) * CHAR + LOCK + 10)
     y = (H - AV) / 2
     if src:
         href = logo(src)
@@ -83,6 +84,12 @@ def chip(name, src):
                 f'<image x="{8 - z}" y="{y - z}" width="{AV + 2*z}" height="{AV + 2*z}" clip-path="url(#av)" href="{href}" xlink:href="{href}"/>')
     else:
         mark = GLYPH.format(x=8, y=y, s=AV, cx=8 + 7, cy=y + 7, lx1=8 + 9.6, ly1=y + 9.6, lx2=8 + 12, ly2=y + 12)
+    tx = 8 + AV + 7 + len(name) * CHAR + 5
+    # Lock drawn as vector in emoji colours (an emoji glyph needs an emoji font the viewer may lack).
+    ly = H / 2 - 6
+    lock = (f'<g transform="translate({tx:.1f} {ly:.1f})"><path d="M3.2 5.5V4a3.3 3.3 0 0 1 6.6 0v1.5" stroke="#A7A9AC" stroke-width="1.7" fill="none"/>'
+            '<rect x="1" y="5.2" width="11" height="7.6" rx="1.8" fill="#F4B400"/><rect x="5.8" y="7.6" width="1.4" height="2.8" rx=".7" fill="#8A5A00"/></g>'
+            if locked else "")
     return w, f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{H}" viewBox="0 0 {w} {H}" fill="none" role="img" aria-label="{html.escape(name)}">
   <style>
     text {{ font-family: {FONT}; }}
@@ -91,7 +98,7 @@ def chip(name, src):
   </style>
   <rect x="0.5" y="0.5" width="{w-1}" height="{H-1}" rx="6" class="bd"/>
   {mark}
-  <text x="{8 + AV + 7}" y="{H/2 + 4}" class="fg" font-size="{FS}" font-weight="500">{html.escape(name)}</text>
+  <text x="{8 + AV + 7}" y="{H/2 + 4}" class="fg" font-size="{FS}" font-weight="500">{html.escape(name)}</text>{lock}
 </svg>
 """
 
@@ -103,9 +110,10 @@ def section(text, key, heading, items, folder):
         old.unlink()
     chips = []
     for fid, name, src, url, title in items:
-        w, svg = chip(name, src)
+        w, svg = chip(name, src, locked=folder == "built" and not url)
+        fid = f"{fid}-{hashlib.sha1(svg.encode()).hexdigest()[:8]}"  # new name per version busts GitHub's image cache
         (out / f"{fid}.svg").write_text(svg)
-        t = html.escape(title)
+        t = html.escape(title + (" (private)" if folder == "built" and not url else ""))
         img = f'<img src="assets/{folder}/{fid}.svg" width="{w}" height="{H}" alt="{html.escape(name)}" title="{t}" />'
         chips.append(f'<a href="{url}" title="{t}">{img}</a>' if url else img)
     block = f"<!-- {key}:start -->\n<p>\n" + "\n".join(chips) + f"\n</p>\n<!-- {key}:end -->"
