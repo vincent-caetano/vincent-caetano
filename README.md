@@ -20,6 +20,23 @@
 <p><sub><b>Product &amp; design</b> Figma, Framer, Webflow, Miro, Linear, Notion, PostHog, Google Analytics, Hotjar, Umami, Chatwoot · <b>Frontend</b> TypeScript, JavaScript, React, Next.js, Tailwind CSS, Vite, Vitest, Astro · <b>Native</b> SwiftUI, Swift, Xcode, Expo / React Native, Rust, Tauri, Electron · <b>Backend</b> Node.js, Python, GraphQL, Supabase, PostgreSQL, Neon, Redis, Firebase, Stripe, Resend, FFmpeg · <b>Infra</b> Linux, Nginx, Docker, AWS, Vercel, Cloudflare, GitHub Actions, Tailscale, Sentry, Grafana · <b>AI &amp; tools</b> Claude API, Claude Code, Codex, Raycast, Git, npm, Bash</sub></p>
 <!-- skills:end -->
 
+### Built by me
+
+<!-- built:start -->
+<p>
+<a href="https://futz.pro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)"><img src="assets/built/futzpro.svg" width="92" height="28" alt="FutzPro" title="FutzPro: pickup football app, auto teams, attendance and stats (iOS, Android)" /></a>
+<img src="assets/built/hostbar.svg" width="92" height="28" alt="Hostbar" title="Hostbar: your Linux server live in the macOS menu bar, over SSH" />
+<a href="https://github.com/vincent-caetano/Github-Greenlight-by-Vincent" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar"><img src="assets/built/greenlight.svg" width="164" height="28" alt="GitHub Greenlight" title="GitHub Greenlight: Actions minutes, budget and runs in the macOS menu bar" /></a>
+<a href="https://github.com/vincent-caetano/memento-vincents-compact-killer" title="Memento: Claude Code context memory that beats /compact"><img src="assets/built/memento.svg" width="92" height="28" alt="Memento" title="Memento: Claude Code context memory that beats /compact" /></a>
+<img src="assets/built/postpilot.svg" width="106" height="28" alt="PostPilot" title="PostPilot: one video into ready YouTube, TikTok and Instagram uploads" />
+<img src="assets/built/openmeta.svg" width="99" height="28" alt="OpenMeta" title="OpenMeta: EXIF metadata editor for macOS" />
+<img src="assets/built/airdrop-dock.svg" width="128" height="28" alt="AirDrop Dock" title="AirDrop Dock: drop files on the Dock, pick a device, done" />
+<a href="https://github.com/vincent-caetano/Squishy-Media-Manager" title="Squishy: native macOS media converter on top of ffmpeg"><img src="assets/built/squishy.svg" width="92" height="28" alt="Squishy" title="Squishy: native macOS media converter on top of ffmpeg" /></a>
+<a href="https://github.com/vincent-caetano/soundboard-for-macos" title="Soundboard: macOS menu bar soundboard with global hotkeys"><img src="assets/built/soundboard.svg" width="114" height="28" alt="Soundboard" title="Soundboard: macOS menu bar soundboard with global hotkeys" /></a>
+<a href="https://github.com/vincent-caetano/tweemoji-brazil-state-flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags"><img src="assets/built/br-flags.svg" width="128" height="28" alt="Brazil Flags" title="Brazil Flags: 27 Twemoji-style Brazilian state flags" /></a>
+</p>
+<!-- built:end -->
+
 ### Contributed to
 
 <!-- projects:start -->
