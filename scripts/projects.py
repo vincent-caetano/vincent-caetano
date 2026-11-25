@@ -58,7 +58,7 @@ def chip(name, src):
                 f'<image x="8" y="{y}" width="{AV}" height="{AV}" clip-path="url(#av)" href="{href}" xlink:href="{href}"/>')
     else:
         mark = GLYPH.format(x=8, y=y, s=AV, cx=8 + 7, cy=y + 7, lx1=8 + 9.6, ly1=y + 9.6, lx2=8 + 12, ly2=y + 12)
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{H}" viewBox="0 0 {w} {H}" fill="none" role="img" aria-label="{html.escape(name)}">
+    return w, f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{H}" viewBox="0 0 {w} {H}" fill="none" role="img" aria-label="{html.escape(name)}">
   <style>
     text {{ font-family: {FONT}; }}
     .fg {{ fill: #1F2023; }} .bd {{ stroke: #D0D7DE; }} .gl {{ fill: #EAEEF2; }} .gs {{ stroke: #57606A; }}
@@ -78,9 +78,10 @@ def build():
         old.unlink()
     chips = []
     for fid, name, src, url, title in PROJECTS:
-        (out / f"{fid}.svg").write_text(chip(name, src))
+        w, svg = chip(name, src)
+        (out / f"{fid}.svg").write_text(svg)
         t = html.escape(title)
-        chips.append(f'<a href="{url}" title="{t}"><img src="assets/projects/{fid}.svg" height="{H}" alt="{html.escape(name)}" title="{t}" /></a>')
+        chips.append(f'<a href="{url}" title="{t}"><img src="assets/projects/{fid}.svg" width="{w}" height="{H}" alt="{html.escape(name)}" title="{t}" /></a>')
     block = "<!-- projects:start -->\n<p>\n" + "\n".join(chips) + "\n</p>\n<!-- projects:end -->"
     readme = ROOT / "README.md"
     text = readme.read_text()

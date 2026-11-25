@@ -47,6 +47,7 @@ SIMPLE = {
     "xcode": ("#147EFB", SI), "ffmpeg": ("#2FB344", SI), "raycast": ("#FF6363", SI),
     "claude": ("#D97757", LH), "claudecode": ("#D97757", LH), "codex": (W_, LH),
 }
+COLUMN = 846  # GitHub profile README content width on desktop, px
 CELL_ICON, PER_ROW, SLOT_GAP, COL_GAP = 32, 3, 6, 24  # README grid: logo px, logos per column line, gaps
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 
@@ -127,12 +128,17 @@ def write_readme():
     def pct(px):
         return f"{px / total_w * 99.4:.3f}%"
 
+    # Fixed heights reserve each line before the images load (no layout shift).
+    # Sized for GitHub's desktop README column; SVGs keep their ratio when narrower.
+    row_h = round(COLUMN * 0.994 * CELL_ICON / total_w)
+    head_h = round(COLUMN * 0.994 * 16 / total_w)
+
     def gap(w):
-        return f'<img src="assets/icons/_{w}.svg" width="{pct(w)}" alt="" />'
+        return f'<img src="assets/icons/_{w}.svg" width="{pct(w)}" height="{row_h}" alt="" />'
 
     def img(n):
         t = html.escape(NAMES[n])
-        return f'<img src="assets/icons/{n}.svg" width="{pct(CELL_ICON)}" alt="{t}" title="{t}" />'
+        return f'<img src="assets/icons/{n}.svg" width="{pct(CELL_ICON)}" height="{row_h}" alt="{t}" title="{t}" />'
 
     rows = max(-(-len(ns) // PER_ROW) for _, ns in GROUPS)
     lines = []
@@ -149,7 +155,7 @@ def write_readme():
         lines.append("".join(parts))
 
     line = " · ".join(f"<b>{html.escape(l)}</b> {html.escape(', '.join(NAMES[n] for n in ns))}" for l, ns in GROUPS)
-    block = (f'<!-- skills:start -->\n<p><img src="assets/skills-head-{v}.svg" width="99.4%" alt="" /><br />\n'
+    block = (f'<!-- skills:start -->\n<p><img src="assets/skills-head-{v}.svg" width="99.4%" height="{head_h}" alt="" /><br />\n'
              + "<br />\n".join(lines) + "</p>\n\n"
              f"<p><sub>{line}</sub></p>\n<!-- skills:end -->")
     readme = ROOT / "README.md"

@@ -11,6 +11,7 @@ import json, subprocess, collections, datetime, pathlib, html, re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONT = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
 LOGIN = "vincent-caetano"
+COLUMN = 846  # GitHub profile README content width on desktop, px
 INSET = 8  # safe margin so viewers that round/border images never clip the edges
 
 # Accent: #D34749 (profile red). Theme-aware palette: light values first, dark overrides in the media query.
@@ -188,7 +189,13 @@ def publish(name, svg):
         old.unlink()
     (ROOT / f"assets/{name}-{v}.svg").write_text(svg)
     readme = ROOT / "README.md"
-    readme.write_text(re.sub(rf'assets/{name}[^"]*\.svg[^"]*"', f'assets/{name}-{v}.svg"', readme.read_text()))
+    text = re.sub(rf'assets/{name}[^"]*\.svg[^"]*"', f'assets/{name}-{v}.svg"', readme.read_text())
+    # Reserve the image's height before it loads (no layout shift). Sized for GitHub's
+    # desktop README column; narrower screens just get a little air (SVG keeps its ratio).
+    m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
+    h = round(COLUMN * float(m.group(2)) / float(m.group(1)))
+    text = re.sub(rf'(<img src="assets/{name}-{v}\.svg" width="100%")( height="\d+")?', rf'\1 height="{h}"', text)
+    readme.write_text(text)
 
 
 if __name__ == "__main__":
